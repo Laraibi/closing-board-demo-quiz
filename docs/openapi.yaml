@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  title: API LMS de démonstration
+  version: 1.0.0
+  description: Quiz, tentatives, feedback et administration. Données fictives. Jeton Bearer obtenu par /api/auth/login.
+servers:
+  - url: http://localhost:3000
+security:
+  - bearer: []
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: { type: string, example: VALIDATION_ERROR }
+            message: { type: string }
+            details: { type: array, items: { type: object } }
+    Quiz:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        module: { type: string }
+        questions:
+          type: array
+          items:
+            type: object
+            properties:
+              id: { type: string }
+              text: { type: string }
+              choices: { type: array, items: { type: string } }
+paths:
+  /api/health:
+    get: { summary: Santé, security: [], responses: { "200": { description: OK } } }
+  /api/auth/login:
+    post:
+      summary: Connexion, renvoie un jeton JWT valable 8 h
+      security: []
+      responses: { "200": { description: Jeton }, "401": { description: Identifiants incorrects } }
+  /api/attempts/me:
+    get: { summary: Mes tentatives seulement, responses: { "200": { description: Liste } } }
+  /api/quizzes:
+    get:
+      summary: Liste des quiz (sans bonnes réponses pour un apprenant)
+      responses: { "200": { description: Liste }, "401": { description: Connexion requise } }
+    post:
+      summary: Créer un quiz (formateur)
+      responses:
+        "201": { description: Créé }
+        "400": { description: Invalide, content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } } }
+        "403": { description: Refusé }
+  /api/attempts:
+    post:
+      summary: Soumettre une tentative complète (3 au plus)
+      responses: { "201": { description: Notée }, "400": { description: Limite atteinte ou invalide } }
+  /api/feedback:
+    post:
+      summary: Feedback formateur sur une tentative
+      responses: { "201": { description: Créé }, "404": { description: Tentative introuvable } }

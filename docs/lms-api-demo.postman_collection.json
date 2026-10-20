@@ -1,0 +1,11 @@
+{
+  "info": { "name": "closing-board-demo-api", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "base", "value": "http://localhost:3000" }, { "key": "token", "value": "" }],
+  "item": [
+    { "name": "Santé", "request": { "method": "GET", "url": "{{base}}/api/health" } },
+    { "name": "Connexion (apprenante)", "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('token', pm.response.json().token);"] } }], "request": { "method": "POST", "header": [{ "key": "content-type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"ada@example.com\",\"password\":\"demo1234\"}" }, "url": "{{base}}/api/auth/login" } },
+    { "name": "Mes quiz", "request": { "method": "GET", "header": [{ "key": "authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/quizzes" } },
+    { "name": "Mes tentatives", "request": { "method": "GET", "header": [{ "key": "authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/attempts/me" } },
+    { "name": "Ma progression", "request": { "method": "GET", "header": [{ "key": "authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/attempts/progression" } }
+  ]
+}
