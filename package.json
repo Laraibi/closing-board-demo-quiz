@@ -1,0 +1,21 @@
+{
+  "name": "closing-board-demo-quiz",
+  "version": "1.0.0",
+  "description": "API de démonstration d'un LMS (quiz, tentatives, feedback) pour la démo du Closing Board. Données fictives.",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test test/",
+    "seed": "node scripts/seed.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  },
+  "license": "MIT"
+}
